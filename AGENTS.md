@@ -1,11 +1,11 @@
 # Green Roof Segmentation
 
-This is a standalone portfolio presentation of the semantic-segmentation component from a two-person university project completed in 2025.
+This is the semantic-segmentation project developed by Lorenzo De Luca and Edoardo Guida as a two-person university project in 2025.
 
 ## Scope and attribution
 
-- Keep this repository limited to the geospatial imagery and segmentation pipeline. The separate optimization component from the original team project is intentionally out of scope.
-- Preserve the two-person university-project context and the link to the original team repository.
+- Keep this repository limited to the geospatial imagery and segmentation pipeline.
+- Preserve the two-person university-project context.
 - Do not imply that the project detected existing green roofs. The municipal labels identify roofs considered potentially suitable for greening.
 - Do not claim that raster-to-vector polygon conversion was implemented. It is documented only as a next step.
 - Do not add a license without confirming the rights and agreement of both original contributors.
@@ -13,7 +13,7 @@ This is a standalone portfolio presentation of the semantic-segmentation compone
 ## Engineering conventions
 
 - Never commit API keys, generated datasets, model weights, virtual environments, or `node_modules`.
-- Do not commit provider-owned aerial imagery. Full datasets should be regenerated locally from the public vector source and a properly licensed imagery account.
+- Keep only the small set of historical figures used by the original project report. Do not commit the generated training dataset or model weights.
 - Use environment-local configuration for Azure Maps and retain `web/config.example.js` as the public template.
 - Prefer deterministic preprocessing, explicit validation, and geographically separated evaluation when extending the experiments.
 
