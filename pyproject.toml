@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "green-roof-segmentation"
+version = "1.0.0"
+description = "Geospatial data preparation and semantic segmentation for potential green roofs in Milan"
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+  "numpy>=1.26,<3",
+  "opencv-python-headless>=4.9,<5",
+]
+
+[project.optional-dependencies]
+training = [
+  "matplotlib>=3.8,<4",
+  "scikit-learn>=1.4,<2",
+  "tensorflow>=2.16,<3",
+]
+dev = [
+  "pytest>=8,<9",
+  "ruff>=0.6,<1",
+]
+
+[project.scripts]
+greenroof-clean-geojson = "green_roof_segmentation.geojson:main"
+greenroof-preprocess = "green_roof_segmentation.preprocess:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/green_roof_segmentation"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

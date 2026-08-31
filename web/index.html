@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Green Roof Dataset Viewer</title>
+    <script src="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.css"
+    />
+    <style>
+      html,
+      body,
+      #map {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+
+      #map {
+        width: 600px;
+        height: 600px;
+      }
+
+      button {
+        margin-top: 0.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" aria-label="Aerial map of Milan with optional roof polygon overlay"></div>
+    <button id="maskButton" type="button">Toggle polygon overlay</button>
+
+    <script src="./config.js"></script>
+    <script>
+      const config = window.GREEN_ROOF_CONFIG;
+      if (!config || !config.azureMapsKey || config.azureMapsKey.startsWith("replace-")) {
+        throw new Error("Copy web/config.example.js to web/config.js and configure Azure Maps.");
+      }
+
+      window.maskVisible = false;
+      window.mapReady = false;
+
+      const map = new atlas.Map("map", {
+        center: [9.19, 45.4642],
+        zoom: 19,
+        pitch: 0,
+        style: "satellite",
+        authOptions: {
+          authType: "subscriptionKey",
+          subscriptionKey: config.azureMapsKey,
+        },
+      });
+      window.map = map;
+
+      map.events.add("ready", async () => {
+        const source = new atlas.source.DataSource();
+        map.sources.add(source);
+
+        const response = await fetch(config.geoJsonUrl);
+        if (!response.ok) {
+          throw new Error(`Could not load GeoJSON: ${response.status} ${response.statusText}`);
+        }
+        source.add(await response.json());
+
+        const layer = new atlas.layer.PolygonLayer(source, "roof-mask", {
+          fillColor: "#ff00ff",
+          fillOpacity: 1,
+          strokeColor: "#ff00ff",
+          strokeWidth: 1,
+          visible: false,
+        });
+        map.layers.add(layer);
+
+        window.setMask = (visible) => {
+          layer.setOptions({ visible });
+          window.maskVisible = visible;
+        };
+        window.mapReady = true;
+      });
+
+      document.getElementById("maskButton").addEventListener("click", () => {
+        if (window.setMask) window.setMask(!window.maskVisible);
+      });
+    </script>
+  </body>
+</html>

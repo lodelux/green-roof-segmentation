@@ -1,0 +1,14 @@
+{
+  "name": "green-roof-segmentation-map-capture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local map viewer and paired aerial-image collector for the green-roof segmentation project",
+  "scripts": {
+    "serve": "python3 -m http.server 3000",
+    "capture": "node scripts/capture_map.js",
+    "check": "node --check scripts/capture_map.js"
+  },
+  "dependencies": {
+    "playwright": "1.61.0"
+  }
+}
